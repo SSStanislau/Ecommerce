@@ -1,0 +1,180 @@
+@import url('//brick.a.ssl.fastly.net/Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+
+.box-content {
+  padding: 20px;
+
+}
+.box-content img{
+  width: 48%;
+  margin: 0 1% 1% 1%;
+  display: block;
+  float: left;
+  height: 500px;
+}
+.price{
+  float: right;
+  font-size: 30px;
+  display: inline-block;
+}
+.box-content p{
+  float: left;
+  width: 100%;
+
+  color: grey;
+  display: inline-block;
+
+}
+.box-content a{
+  text-decoration: none;
+  color: white;
+  background-color: black;
+  padding: 5% 15%;
+  display: block;
+  text-align: center;
+  margin:20%;
+
+}
+h2{
+  text-align: left;
+  font-size: 30px;
+  margin-top: 15px;
+  display: inline-block;
+}
+.box-cell {
+  margin-bottom: 10px;
+
+  &.one {
+    background-color: #F26E11
+  }
+
+  &.two {
+    background-color: #84B2A1;
+  }
+
+  &.three {
+    background-color: #F9EDC7;
+  }
+}
+
+.heading{
+  text-align: center;
+  margin-bottom: 10px
+}
+
+
+@media only screen and (min-width: 900px) {
+
+  .boxes {
+    display: table;
+    width: 100%;
+  }
+
+  .box-row {
+    display: table-row;
+  }
+
+  .box-cell {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+  }
+  .one{
+    width: 70%;
+  }
+  .three{
+    width: 30%;
+  }
+
+}
+@media (max-width: 500px){
+  .container img{
+    width: 100%;
+  }
+}
+  .accordion {
+    width: 100%;
+    margin: 50px auto;
+
+  }
+
+  .accordion .item {
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .accordion .header {
+    padding: 15px 0px;
+    cursor: pointer;
+    border-bottom: 1px solid grey;
+    color: black;
+  }
+
+  .accordion .header h3 {
+    margin: 0;
+    padding: 0 auto;
+  }
+
+  .accordion .content {
+    padding: 0;
+    font-size: 15px;
+    line-height: 20px;
+    max-height: 0;
+    transition: all ease-in-out 0.2s;
+  }
+
+  .accordion .item.open .content {
+    padding: 20px 0;
+    max-height: 150px;
+  }
+.fa{
+  font-size: 20px;
+  float: right;
+}
+  .checked {
+  color: orange;
+}
+.switch-field {
+	display: flex;
+	margin-bottom: 36px;
+	overflow: hidden;
+}
+
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+.switch-field label {
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 14px;
+	line-height: 1;
+	text-align: center;
+	padding: 8px 16px;
+	margin-right: -1px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+	cursor: pointer;
+}
+
+.switch-field input:checked + label {
+	background-color: #a5dc86;
+	box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}

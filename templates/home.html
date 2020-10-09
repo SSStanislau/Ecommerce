@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+<div class="banner" style="background-image: url({{ MEDIA_URL }}{{new_collection.cover.url}})">
+    <div class="banner-info">
+        <p>{{new_collection.name}}</p>
+        <h1>NEW ARRIVALS</h1>
+        <a href="/shop">SHOP NOW</a>
+    </div>
+</div>
+<h3 class="block-header">New in</h3>
+<div class="hot-items">
+    {% for product in new_collection_items %}
+        <a class="image" href="{{ product.product.get_absolute_url }}" style="background-image: url({{ MEDIA_URL }}{{product.product.product_cover.url}})">
+        <div class="text-block">
+        <h4>{{product.product.name}}</h4>
+        <p>{{product.product.price}} $</p>
+        </div>
+        </a>
+    {% endfor %}
+</div>
+<h3 class="block-header">Stories</h3>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<div class="content">
+    <div class="grid">
+        <figure class="effect-julia">
+            <img src="https://tympanus.net/Development/HoverEffectIdeas/img/21.jpg" alt="img21"/>
+            <figcaption>
+                <h2>Passionate <span>Storie</span></h2>
+                <div>
+                    <p>Julia dances in the deep dark</p>
+                    <p>She loves the smell of the ocean</p>
+                    <p>And dives into the morning light</p>
+                </div>
+                <a href="#">View more</a>
+            </figcaption>
+        </figure>
+        <figure class="effect-julia">
+            <img src="https://tympanus.net/Development/HoverEffectIdeas/img/22.jpg" alt="img22"/>
+            <figcaption>
+                <h2>Passionate <span>Storie</span></h2>
+                <div>
+                    <p>Julia dances in the deep dark</p>
+                    <p>She loves the smell of the ocean</p>
+                    <p>And dives into the morning light</p>
+                </div>
+                <a href="#">View more</a>
+            </figcaption>
+        </figure>
+    </div>
+</div>
+{% endblock %}

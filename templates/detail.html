@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %} {{item.name}} {% endblock %}
+{% block content %}
+<div class="boxes">
+    <div class="box-row">
+      <div class="box-cell one" >
+        <div class="box-content">
+            {% for photo in item.product_images %}
+            <img src="{{ MEDIA_URL }}{{ photo.image.url }}" alt="">
+            {% endfor %}
+        </div>
+      </div>
+
+      <div class="box-cell three" >
+        <div class="box-content">
+          <p>{{ item.type }}</p>
+          <span class="price">{{ item.price }} $</span>
+          <h2 style="width: 100%;">{{ item.name }}</h2>
+          <p style="margin: 50px 0;">{{ item.description }}</p>
+
+          <a href="#">ADD TO CART</a>
+          <div class="accordion">
+  <div class="item open">
+    <div class="header">
+      <h3>How this was made</h3>
+    </div>
+    <div class="content">
+      Maecenas vitae dictum orci, et placerat magna. Mauris et nibh id mi vestibulum tincidunt. Donec mauris nisl, viverra vitae purus id, aliquam facilisis erat. In cursus nulla at neque volutpat egestas. Nam faucibus nibh nec nibh ultricies dapibus. Nullam quis mi sit amet augue tincidunt consectetur vitae vitae orci. Sed.
+    </div>
+  </div>
+   <div class="item">
+    <div class="header">
+      <h3>Free shipping & Returns</h3>
+    </div>
+    <div class="content">
+      Nullam vitae mattis ante. Vestibulum vehicula eu ligula quis tincidunt. Suspendisse nec nunc nisl. Donec scelerisque, quam molestie pellentesque imperdiet, arcu leo finibus mi, ac tempor enim enim sed nulla. Cras vulputate nec arcu eget ultrices. Nunc euismod dui nec nunc malesuada, ac maximus lectus auctor. Duis malesuada aliquam sem.
+    </div>
+  </div>
+   <div class="item">
+    <div class="header">
+      <h3>Reviews(3)
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+      </h3>
+    </div>
+    <div class="content">
+      Aliquam nec suscipit libero, nec vehicula lorem. In gravida, sapien ut elementum posuere, nibh sapien varius turpis, sit amet ullamcorper ipsum arcu ut arcu. Morbi vel tortor enim. Proin et velit eu nisi convallis vestibulum. Aliquam tincidunt nulla ipsum. Nam at lorem non dui molestie maximus. Quisque auctor tincidunt justo.
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+  $(document).on('click', '.item', function() {
+  $(this).toggleClass('open');
+});
+</script>
+<link rel="stylesheet" href="{% static "css/detail.css" %}">
+
+{% endblock %}

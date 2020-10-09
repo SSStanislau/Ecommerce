@@ -1,0 +1,198 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  font-family: sans-serif;
+}
+.burger {
+  cursor: pointer;
+  width: 10%;
+}
+.burger > div {
+  width: 30px;
+  height: 3px;
+  margin: 5px;
+  background-color: #f3f3f3;
+}
+.navbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 1.3em;
+  min-height: 8vh;
+}
+.navbar ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.navbar ul li {
+  list-style: none;
+}
+.navbar ul li a {
+  display: block;
+  text-decoration: none;
+  margin-right: 1.4em;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+}
+.side-nav {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 0 1.4em;
+  background-color: white;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  -webkit-transform: translateX(-100px);
+  transform: translateX(-100%);
+  -webkit-transition: -webkit-transform 0.4s ease-in-out;
+  transition: -webkit-transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out;
+}
+.side-nav.active {
+  -webkit-transform: translate(0);
+  transform: translate(0);
+}
+.side-nav a {
+  display: block;
+  color: #555;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+.close-btn {
+  font-size: 50px;
+  font-weight: 500;
+  color: #555;
+  position: absolute;
+  right: 0;
+  margin-right: 1.2em;
+  cursor: pointer;
+}
+h1 {
+  text-align: center;
+  font-size: 5ch;
+  margin-top: 5em;
+  text-transform: uppercase;
+  color: #f2f2f2;
+  line-height: 96px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+@media (max-width: 768px) {
+  .navbar ul li {
+    display: none;
+  }
+  h1 {
+    font-size: 2rem;
+    line-height: 42px;
+  }
+}
+@media (max-width: 350px){
+  #side-menu{
+    width: 100%;
+  }
+}
+.a{
+  display: none;
+}
+.container {
+	max-width: 100rem;
+	margin: 0 auto;
+	padding: 0 2rem 2rem;
+}
+.content-title{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.heading {
+	font-family: "Montserrat", Arial, sans-serif;
+	font-size: 4rem;
+	font-weight: 500;
+	line-height: 1.5;
+	text-align: center;
+	padding: 3.5rem 0;
+	color: #1a1a1a;
+}
+
+.heading span {
+	display: block;
+}
+
+.gallery {
+	display: flex;
+	flex-wrap: wrap;
+	/* Compensate for excess margin on outer gallery flex items */
+	margin: -1rem -1rem;
+}
+
+.gallery-item {
+	/* Minimum width of 24rem and grow to fit available space */
+	flex: 1 0 15rem;
+	/* Margin value should be half of grid-gap value as margins on flex items don't collapse */
+	margin: 1rem;
+	overflow: hidden;
+    height: 400px;
+    color: black;
+}
+
+.gallery-image {
+	display: block;
+	width: 100%;
+	height: 80%;
+	object-fit: cover;
+	transition: transform 400ms ease-out;
+}
+.gallery-item p{
+  margin: 10px 0;
+  color: black;
+}
+.gallery-item span:hover{
+    color: black;
+}
+
+/*
+
+The following rule will only run if your browser supports CSS grid.
+
+Remove or comment-out the code block below to see how the browser will fall-back to flexbox styling.
+
+*/
+
+@supports (display: grid) {
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+		grid-gap: 1rem;
+	}
+
+	.gallery,
+	.gallery-item {
+		margin: 0;
+	}
+}

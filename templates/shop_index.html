@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}{% if category %}{{ category.name }}{% else %}Products{% endif %}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static "css/shop.css" %}">
+<div class="navbar">
+
+<div class="burger" id="burger-menu">
+  <div class="line1"></div>
+  <div class="line2"></div>
+  <div class="line3"></div>
+</div>
+</div>
+<h2 class="content-title">{% if category %} {{ category.name }} {% else %} All {% endif %}</h2>
+<div class="side-nav" id="side-manu">
+<div class="close-btn">&times;</div>
+  {% for c in categories %}
+    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+  {% endfor %}
+</div>
+
+<div class="container">
+
+<div class="gallery">
+    {% for product in products %}
+    <a class="gallery-item" href="{{ product.get_absolute_url }}">
+        <img class="gallery-image" src="{{ MEDIA_URL }}{{ product.product_cover.url }}" alt="{{ product.name }}">
+        <p>{{ product.name }}</p>
+        <span>{{ product.price }} $</span>
+    </a>
+    {% endfor %}
+</div>
+
+</div>
+<script type="text/javascript">
+    const burger = document.getElementById("burger-menu");
+    const sideNav = document.querySelector(".side-nav");
+    const closeBtn = document.querySelector(".close-btn");
+    const sidemenu = document.querySelectorAll(".side-nav a");
+
+    burger.addEventListener("click", () => {
+        sideNav.classList.add("active");
+        burger.classList.add("a");
+    });
+    closeBtn.addEventListener("click", () => {
+        sideNav.classList.remove("active");
+        burger.classList.remove("a");
+    });
+</script>
+{% endblock %}
