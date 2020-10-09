@@ -1,0 +1,21 @@
+{% extends 'registration/index.html' %}
+{% block title %}Sign in{% endblock %}
+{% block box_title %}Sign in{% endblock %}
+{% block content %}
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="inputBox">
+            {{ field }}
+            <label>{{ field.label }}</label>
+        </div>
+    {% endfor %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="submit" name="sign-in" value="Sign In">
+    <p>Not registered?  </p> <a href="#" class="create"> Create an account</a>
+    <a href="{% url 'password_reset' %}" class="forgot">Forgot password?</a>
+</form>
+{% if form.errors %}
+    <p style="color: red;">Your username and password didn't match.Please try again.</p>
+{% endif %}
+{% endblock %}
