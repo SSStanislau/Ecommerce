@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from account.models import Profile, PaymentCard
+
+
+@admin.register(Profile)
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PaymentCard)
+class CategoryAdmin(admin.ModelAdmin):
+    pass

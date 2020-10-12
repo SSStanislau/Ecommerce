@@ -1,0 +1,9 @@
+{% extends 'index.html'%}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{form }}
+    <input name="profile_edit" type="submit" value="Submit" />
+</form>
+{% endblock %}
