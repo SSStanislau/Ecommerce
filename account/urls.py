@@ -2,7 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
-from .views import RegisterView
+
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
@@ -20,5 +20,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
     path('registration/', views.signup, name='registration'),
-    path('profile/edit', RegisterView.as_view(), name='profile_edit')
+    path('profile/edit', views.profile_edit_form, name='profile_edit')
 ]

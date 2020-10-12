@@ -1,9 +1,13 @@
 {% extends 'index.html'%}
+{% load static %}
 {% block title %}Edit Profile{% endblock %}
 {% block content %}
+{% include 'profile/profile_nav.html' %}
+<link rel="stylesheet" href="{% static "css/profile_edit.css" %}">
 <form method="post">
     {% csrf_token %}
-    {{form }}
+    {{user_form.as_p }}
+    {{profile_form.as_p}}
     <input name="profile_edit" type="submit" value="Submit" />
 </form>
 {% endblock %}

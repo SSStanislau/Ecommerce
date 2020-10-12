@@ -1,11 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.generic import FormView
 
-from .forms import UserRegistrationForm, MultiEditForm
+from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import edit_profile
 
 
@@ -27,12 +25,17 @@ def signup(request):
     return render(request, 'registration/registration.html', {'form': form})
 
 
-class RegisterView(LoginRequiredMixin, FormView):
-    template_name = "profile/edit.html"
-    form_class = MultiEditForm
-    success_url = 'shop:home'
-
-    def form_valid(self, form):
-        edit_profile(form, self.request.user)
-        messages.success(self.request, 'Your profile was successfully changed')
-        return HttpResponse('Well done')
+@login_required
+def profile_edit_form(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile,
+                                       data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    return render(request, 'profile/edit.html',
+                  {'user_form': user_form, 'profile_form': profile_form})

@@ -1,5 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MaxValueValidator
+from django.db.models import Avg
 
 
 class ShopEntityModel(models.Model):
@@ -50,9 +53,12 @@ class Product(ShopEntityModel):
                                'slug': self.slug,
                                'pk': self.id})
 
+    def get_avg_rating(self):
+        return int(ProductReview.objects.filter(product=self.id).aggregate(Avg('rating'))['rating__avg'])
+
 
 class ProductEntityModel(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True)
 
     class Meta:
         abstract = True
@@ -78,3 +84,13 @@ def get_new_collection():
 
 def get_new_collection_items():
     return Collection.objects.filter(collection=get_new_collection().id)
+
+
+class ProductReview(ProductEntityModel):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(validators=[MaxValueValidator(2020)])
+    body = models.CharField(max_length=255)
+
+    def get_reviews_number(self, product):
+        return super().objects.filter(product=product).count()

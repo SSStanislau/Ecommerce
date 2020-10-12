@@ -1,6 +1,6 @@
 from django.utils.html import format_html
 from django.contrib import admin
-from .models import Product, Category, ProductImage, ShopCollection, Collection
+from .models import Product, Category, ProductImage, ShopCollection, Collection, ProductReview
 
 
 @admin.register(Category)
@@ -29,3 +29,8 @@ class ProductsCollectionAdmin(admin.StackedInline):
 @admin.register(ShopCollection)
 class CollectionAdmin(admin.ModelAdmin):
     inlines = [ProductsCollectionAdmin]
+
+
+@admin.register(ProductReview)
+class CategoryAdmin(admin.ModelAdmin):
+    pass

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.base import TemplateView
 
-from shop.models import Product, get_new_collection, get_new_collection_items, ShopCollection, Category
+from shop.models import Product, get_new_collection, get_new_collection_items, ShopCollection, Category, ProductReview
 
 
 class HomePageView(TemplateView):
@@ -20,6 +20,13 @@ class ProductDetailView(DetailView):
     queryset = Product.objects.filter(available=True)
     context_object_name = 'item'
     template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        reviews = ProductReview.objects.filter(product=self.get_object())
+        context['reviews'] = reviews
+        context['reviews_number'] = ProductReview.objects.filter(product=self.get_object()).count()
+        return context
 
 
 class ShopListView(CreateView):
