@@ -54,7 +54,10 @@ class Product(ShopEntityModel):
                                'pk': self.id})
 
     def get_avg_rating(self):
-        return int(ProductReview.objects.filter(product=self.id).aggregate(Avg('rating'))['rating__avg'])
+        reviews = ProductReview.objects.filter(product=self.id)
+        if reviews:
+            return int(reviews.aggregate(Avg('rating'))['rating__avg'])
+        return 0
 
 
 class ProductEntityModel(models.Model):
@@ -92,5 +95,5 @@ class ProductReview(ProductEntityModel):
     rating = models.IntegerField(validators=[MaxValueValidator(2020)])
     body = models.CharField(max_length=255)
 
-    def get_reviews_number(self, product):
-        return super().objects.filter(product=product).count()
+    class Meta:
+        ordering = ('-timestamp',)

@@ -21,42 +21,129 @@
 
           <a href="#">ADD TO CART</a>
           <div class="accordion">
-  <div class="item open">
-    <div class="header">
-      <h3>How this was made</h3>
+    <div class="item open">
+        <div class="header">
+        <h3>How this was made</h3>
     </div>
     <div class="content">
       Maecenas vitae dictum orci, et placerat magna. Mauris et nibh id mi vestibulum tincidunt. Donec mauris nisl, viverra vitae purus id, aliquam facilisis erat. In cursus nulla at neque volutpat egestas. Nam faucibus nibh nec nibh ultricies dapibus. Nullam quis mi sit amet augue tincidunt consectetur vitae vitae orci. Sed.
     </div>
-  </div>
-   <div class="item">
-    <div class="header">
-      <h3>Free shipping & Returns</h3>
     </div>
-    <div class="content">
+        <div class="item">
+            <div class="header">
+                <h3>Free shipping & Returns</h3>
+            </div>
+            <div class="content">
       Nullam vitae mattis ante. Vestibulum vehicula eu ligula quis tincidunt. Suspendisse nec nunc nisl. Donec scelerisque, quam molestie pellentesque imperdiet, arcu leo finibus mi, ac tempor enim enim sed nulla. Cras vulputate nec arcu eget ultrices. Nunc euismod dui nec nunc malesuada, ac maximus lectus auctor. Duis malesuada aliquam sem.
-    </div>
-  </div>
-   <div class="item">
-    <div class="header">
-      <h3>Reviews({{item.get_avg_rating}})
-
-      </h3>
-    </div>
-    <div class="content">
-      Aliquam nec suscipit libero, nec vehicula lorem. In gravida, sapien ut elementum posuere, nibh sapien varius turpis, sit amet ullamcorper ipsum arcu ut arcu. Morbi vel tortor enim. Proin et velit eu nisi convallis vestibulum. Aliquam tincidunt nulla ipsum. Nam at lorem non dui molestie maximus. Quisque auctor tincidunt justo.
-    </div>
-  </div>
-</div>
-
-        </div>
+            </div>
       </div>
+       <div class="item">
+           <div class="header">
+                <h3>Average rating
+                     {% for i in 5|subtract:item.get_avg_rating|times %}
+                        <span class="fa fa-star"></span>
+                    {% endfor %}
+                    {% for j in item.get_avg_rating|times%}
+                        <span class="fa fa-star checked"></span>
+                    {% endfor %}
+                </h3>
+           </div>
+       </div>
     </div>
 
+    </div>
+  </div>
 </div>
-<script type="text/javascript">
-  $(document).on('click', '.item', function() {
-  $(this).toggleClass('open');
+    <h1 style="margin: 2%;">Reviews <sup class="comments_number">{{ reviews.count }}</sup>
+
+    </h1>
+
+{% if request.user.is_authenticated %}
+<div class="comment_form">
+
+        <div class="rating gold">
+
+
+           <div s="5" t="Great!"><span class="fa fa-star"></span></div>
+           <div s="4" t="Good!" ><span class="fa fa-star"></span></div>
+           <div s="3" t="Middling!"><span class="fa fa-star"></span></div>
+           <div s="2" t="Weak!"><span class="fa fa-star"></span></div>
+           <div s="1" t="Uh..."><span class="fa fa-star"></span></div>
+
+    </div>
+    <textarea id="body" name = 'body' wrap="off" cols="30" rows="5" placeholder="Comment"></textarea>
+
+    <div class="send">Send comment</div>
+    </div>
+{% endif %}
+<ul class="comments_container">
+        {% for review in reviews %}
+        <li>
+            <div class="comment">
+                <span class="comment-rating">
+                    {% for i in 5|subtract:review.rating|times %}
+                        <span class="fa fa-star"></span>
+                    {% endfor %}
+                    {% for j in review.rating|times%}
+                        <span class="fa fa-star checked"></span>
+                    {% endfor %}
+
+                </span>
+                <span class="comment-date">{{review.timestamp}}</span>
+		        <span class="user-name">{{ review.owner.username }}</span>
+
+		        <p>{{ review.body }}</p>
+	        </div>
+        </li>
+
+        {% endfor %}
+    </ul>
+</div>
+<script>
+$('.rating div').addClass('star');
+$('.star').click(function(){
+    if (this+":not(.selected)"){
+        $('.star').removeClass('selected');
+        $(this).addClass('selected');
+}});
+
+$('.send').click(function (){
+    var rate = $('.selected').attr('s')
+    var comment = $('#body').val()
+    if(comment.length < 5){
+        alert('Minimum comment length 5 characters')
+    }
+    else if (rate == null){
+        alert('Rate the product')
+        }
+    else
+        {
+        $.ajax({
+            type:'POST',
+            url:  '{{ item.get_absolute_url }}',
+            data:{
+                product_id: {{ item.id }},
+                text: comment,
+                rating: rate,
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                datatype: 'json'
+            },
+            success: function(data){
+                var html_comment = ("<div class='comment'><span class='comment-rating'>"+"<span class='fa fa-star'></span>".repeat(5-rate) + "<span class='fa fa-star checked'></span>".repeat(rate)  + "</span> <span class='comment-date'>Now</span> <span class='user-name'>{{ request.user.username }}</span><p>" + comment + "</p></div>")
+                 $(".comments_container").prepend(html_comment);
+                 $(".comments_container").append(html_comment);
+                 var num = +$(".comments_number").text() + 1;
+                 $(".comments_number").text(num);
+           },
+            error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+        });
+    }
+});
+
+$(document).on('click', '.item', function() {
+    $(this).toggleClass('open');
 });
 </script>
 <link rel="stylesheet" href="{% static "css/detail.css" %}">

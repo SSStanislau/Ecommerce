@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.base import TemplateView
@@ -27,6 +28,20 @@ class ProductDetailView(DetailView):
         context['reviews'] = reviews
         context['reviews_number'] = ProductReview.objects.filter(product=self.get_object()).count()
         return context
+
+    def post(self, request, *args, **kwargs):
+        comment = request.POST.get('text')
+        product_id = request.POST.get('product_id')
+        rating = request.POST.get('rating')
+        if request.is_ajax():
+            current_product = Product.objects.get(id=product_id)
+            new_comment = ProductReview(product=current_product,
+                                        body=comment,
+                                        owner=self.request.user,
+                                        rating=int(rating)
+                                        )
+            new_comment.save()
+            return JsonResponse({'status': 'Ok'})
 
 
 class ShopListView(CreateView):
