@@ -4,6 +4,7 @@ from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.base import TemplateView
 
 from shop.models import Product, get_new_collection, get_new_collection_items, ShopCollection, Category, ProductReview
+from analytics.mixins import ObjectViewMixin
 
 
 class HomePageView(TemplateView):
@@ -16,7 +17,7 @@ class HomePageView(TemplateView):
         return context
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(ObjectViewMixin, DetailView):
     model = Product
     queryset = Product.objects.filter(available=True)
     context_object_name = 'item'

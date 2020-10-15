@@ -21,6 +21,11 @@ class UserRegistrationForm(forms.ModelForm):
         return cd['repeat_password']
 
 
+class SigninForm(forms.Form):
+    username = forms.CharField(label='Username')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User

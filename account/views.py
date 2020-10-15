@@ -2,9 +2,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils.http import is_safe_url
+from django.views.generic import FormView
 
-from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm, SigninForm
 from .models import edit_profile
+from .signals import user_logged_in
 
 
 def signup(request):
@@ -23,6 +26,22 @@ def signup(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/registration.html', {'form': form})
+
+
+class SignInView(FormView):
+    form_class = SigninForm
+    success_url = '/'
+    template_name = 'registration/login.html'
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(self.request, username=username, password=password)
+        if user is not None:
+            login(self.request, user)
+            user_logged_in.send(user.__class__, instance=user, request=self.request)
+            return redirect(self.success_url)
+        return super(SignInView, self).form_invalid(self.form_class)
 
 
 @login_required
