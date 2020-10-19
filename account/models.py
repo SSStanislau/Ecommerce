@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from cart.models import Cart
 
 SEX_CHOSEN = [
     ('M', 'Men'),
@@ -35,7 +36,9 @@ class PaymentCard(models.Model):
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        Cart.objects.create(user=instance)
     instance.profile.save()
+    instance.cart.save()
 
 
 def edit_profile(form, user):

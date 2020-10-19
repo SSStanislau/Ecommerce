@@ -3,7 +3,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.base import TemplateView
 
-from shop.models import Product, get_new_collection, get_new_collection_items, ShopCollection, Category, ProductReview
+from shop.models import Product, get_new_collection, get_new_collection_items, Category, ProductReview
+from analytics.models import ObjectViewed
 from analytics.mixins import ObjectViewMixin
 
 
@@ -28,6 +29,8 @@ class ProductDetailView(ObjectViewMixin, DetailView):
         reviews = ProductReview.objects.filter(product=self.get_object())
         context['reviews'] = reviews
         context['reviews_number'] = ProductReview.objects.filter(product=self.get_object()).count()
+        if self.request.user.is_authenticated:
+            context['last_viewed'] = ObjectViewed.last_five_viewed(self.request.user.id)
         return context
 
     def post(self, request, *args, **kwargs):

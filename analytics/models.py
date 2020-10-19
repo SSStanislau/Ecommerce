@@ -3,11 +3,11 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.sessions.models import Session
-from django.db.models.signals import pre_save, post_save
 
 from account.signals import user_logged_in
 from analytics.signals import object_viewed_signal
 from analytics.utils import get_client_ip
+from shop.models import Product
 
 User = settings.AUTH_USER_MODEL
 
@@ -28,16 +28,20 @@ class ObjectViewed(models.Model):
         verbose_name = 'Object Viewed'
         verbose_name_plural = 'Objects Viewed'
 
+    @classmethod
+    def last_five_viewed(cls, user):
+        last_viewed = cls.objects.filter(user=user).order_by('object_id').distinct('object_id')[:5]
+        return [Product.objects.get(id=item.object_id) for item in last_viewed]
+
 
 def object_viewed_receiver(sender, instance, request, *args, **kwargs):
-    print(sender)
     c_type = ContentType.objects.get_for_model(sender)
     ip_address = None
     try:
         ip_address = get_client_ip(request)
     except:
         pass
-    new_view_instance = ObjectViewed.objects.create(
+    ObjectViewed.objects.create(
         user=request.user,
         content_type=c_type,
         object_id=instance.id,

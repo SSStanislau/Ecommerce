@@ -2,6 +2,11 @@
 {% load static %}
 {% block title %} {{item.name}} {% endblock %}
 {% block content %}
+<div style="float: left; width: 100%">
+{% for el in last_viewed %}
+    {{el.name}}
+{% endfor %}
+</div>
 <div class="boxes">
     <div class="box-row">
       <div class="box-cell one" >
@@ -19,7 +24,7 @@
           <h2 style="width: 100%;">{{ item.name }}</h2>
           <p style="margin: 50px 0;">{{ item.description }}</p>
 
-          <a href="#">ADD TO CART</a>
+          <button id="cart">ADD TO CART</button>
           <div class="accordion">
     <div class="item open">
         <div class="header">
@@ -60,16 +65,12 @@
 
 {% if request.user.is_authenticated %}
 <div class="comment_form">
-
-        <div class="rating gold">
-
-
+    <div class="rating gold">
            <div s="5" t="Great!"><span class="fa fa-star"></span></div>
            <div s="4" t="Good!" ><span class="fa fa-star"></span></div>
            <div s="3" t="Middling!"><span class="fa fa-star"></span></div>
            <div s="2" t="Weak!"><span class="fa fa-star"></span></div>
            <div s="1" t="Uh..."><span class="fa fa-star"></span></div>
-
     </div>
     <textarea id="body" name = 'body' wrap="off" cols="30" rows="5" placeholder="Comment"></textarea>
 
@@ -95,7 +96,6 @@
 		        <p>{{ review.body }}</p>
 	        </div>
         </li>
-
         {% endfor %}
     </ul>
 </div>
@@ -144,6 +144,25 @@ $('.send').click(function (){
 
 $(document).on('click', '.item', function() {
     $(this).toggleClass('open');
+});
+
+$('#cart').click(function (){
+    alert({{ item.id }})
+    $.ajax({
+            type:'POST',
+            url:  '{% url "cart:add_to_cart" %}',
+            data:{
+                product_id: {{ item.id }},
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                datatype: 'json'
+            },
+            success: function(data){
+                alert('OK')
+           },
+            error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+        });
 });
 </script>
 <link rel="stylesheet" href="{% static "css/detail.css" %}">

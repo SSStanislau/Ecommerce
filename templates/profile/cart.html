@@ -1,0 +1,9 @@
+{% extends 'index.html'%}
+{% load static %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+{% include 'profile/profile_nav.html' %}
+{% for product in items %}
+    {{ product.product.price }}
+{% endfor %}
+{% endblock %}
