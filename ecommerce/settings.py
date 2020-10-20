@@ -128,3 +128,5 @@ LOGOUT_REDIRECT_URL = '/'
 LOGOUT_URL = 'logout'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CART_SESSION_ID = 'cart'

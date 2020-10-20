@@ -147,10 +147,9 @@ $(document).on('click', '.item', function() {
 });
 
 $('#cart').click(function (){
-    alert({{ item.id }})
     $.ajax({
             type:'POST',
-            url:  '{% url "cart:add_to_cart" %}',
+            url:  '{% url "cart:add_to_cart" item.id %}',
             data:{
                 product_id: {{ item.id }},
                 csrfmiddlewaretoken:'{{ csrf_token }}',

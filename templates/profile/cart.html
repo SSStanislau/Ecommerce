@@ -3,7 +3,10 @@
 {% block title %}Cart{% endblock %}
 {% block content %}
 {% include 'profile/profile_nav.html' %}
-{% for product in items %}
-    {{ product.product.price }}
+{% for item in items %}
+    {% with product=item.product %}
+        {{ product.price }}
+    {% endwith %}
 {% endfor %}
+{{ items.get_total_price }}
 {% endblock %}

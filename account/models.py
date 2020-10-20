@@ -36,9 +36,7 @@ class PaymentCard(models.Model):
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-        Cart.objects.create(user=instance)
     instance.profile.save()
-    instance.cart.save()
 
 
 def edit_profile(form, user):

@@ -9,9 +9,6 @@ class Cart(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def get_absolute_url(self):
-        return reverse('cart:cart', args=[self.id])
-
     @classmethod
     def get_items(cls, request):
         cart = cls.objects.get(owner=request.user.id)
