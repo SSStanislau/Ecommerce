@@ -14,6 +14,12 @@ class Cart(models.Model):
         cart = cls.objects.get(owner=request.user.id)
         return CartItem.objects.filter(cart=cart)
 
+    @classmethod
+    def get_total_price(cls, request):
+        cart = cart = cls.objects.get(owner=request.user.id)
+        cart_items = CartItem.objects.filter(cart=cart)
+        return sum([item.product.price for item in cart_items])
+
 
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -28,3 +34,7 @@ class CartItem(models.Model):
             product=product,
             cart=cart
         ).save()
+
+    @classmethod
+    def delete_item(cls, cart_item):
+        item = cls.objects.get(id=cart_item).delete()

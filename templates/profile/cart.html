@@ -2,11 +2,68 @@
 {% load static %}
 {% block title %}Cart{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{% static "css/cart.css" %}">
 {% include 'profile/profile_nav.html' %}
-{% for item in items %}
-    {% with product=item.product %}
-        {{ product.price }}
-    {% endwith %}
-{% endfor %}
-{{ items.get_total_price }}
+<table id="cart">
+    <thead>
+        <tr>
+            <th class="first">Photo</th>
+            <th class="second">Product</th>
+            <th class="third">Line Total</th>
+            <th class="fourth">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        {% with product=item.product %}
+        <tr class="productitm" id="{{ item.id }}">
+            <td><img src="{{ MEDIA_URL }}{{ product.product_cover.url }}" class="thumb"></td>
+
+            <td><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+            <td>{{ product.price}} $</td>
+            <td><span class="remove" id="{{ product.id }}"><img src="https://i.imgur.com/h1ldGRr.png" alt="X"></span></td>
+       </tr>
+        {% endwith %}
+    {% endfor %}
+
+        <tr class="extracosts">
+            <td class="light">Shipping &amp; Tax</td>
+            <td colspan="2" class="light"></td>
+            <td>$35.00</td>
+            <td>&nbsp;</td>
+       </tr>
+
+        <tr class="totalprice">
+            <td class="light">Total:</td>
+            <td colspan="2">&nbsp;</td>
+            <td colspan="2"><span class="thick">{{ total_price }}</span></td>
+       </tr>
+
+        <tr class="checkoutrow">
+            <td colspan="5" class="checkout"><button id="submitbtn">Checkout Now!</button></td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    $('.remove').click(function (){
+    var id = $(this).parent().parent().attr("id")
+    var product_id = $(this).attr("id")
+    $.ajax({
+            type:'POST',
+            url:  window.location.href + 'remove/' + String(product_id),
+            data:{
+                id: id,
+                product_id: product_id,
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                datatype: 'json'
+            },
+            success: function(data){
+                $('span, #' + String(product_id)).parent().parent().remove()
+           },
+            error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+        });
+});
+</script>
 {% endblock %}

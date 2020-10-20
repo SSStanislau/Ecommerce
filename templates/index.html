@@ -20,7 +20,7 @@
     {% else %}
       <a href="{% url "login" %}" class="account"><img src={% static "img/account.svg" %} alt=""></a>
     {% endif %}
-    <a class="cart" href="#">
+    <a class="cart" href="{% url 'cart:cart' %}">
       <img src="{% static "img/bag.svg" %}" alt="">
       <span>1</span>
     </a>
